@@ -22,10 +22,86 @@ export class Cell {
         
     }
 
+    isEmpty(): boolean {    
+        return this.figure === null;
+    }
+
+    isEnemy(target: Cell): boolean {
+        if (target.figure) {
+            return this.figure?.color !== target.figure.color;
+        }
+        return false;
+    }
+
+    isEmptyVertical (traget: Cell): boolean {
+        if (this.x !== traget.x) {
+            return false;
+        }
+
+        const min = Math.min(this.y, traget.y);
+        const max = Math.max(this.y, traget.y);
+        for (let y = min + 1; y < max; y++) {
+            if (!this.board.getCell(this.x, y).isEmpty()) {
+                return false;
+            }
+        }
+
+        return true
+    }
+
+    isEmptyHorizontal (traget: Cell): boolean {
+        if (this.y !== traget.y) {
+            return false;
+        }
+
+        const min = Math.min(this.x, traget.x);
+        const max = Math.max(this.x, traget.x);
+        for (let x = min + 1; x < max; x++) {
+            if (!this.board.getCell(x, this.y).isEmpty()) {
+                return false;
+            }
+        }
+
+        return true
+    }
+
+    isEmptyDiagonal (traget: Cell): boolean {
+        const absX = Math.abs(this.x - traget.x);
+        const absY = Math.abs(this.y - traget.y);
+
+        if (absX !== absY) {
+            return false;
+        }
+
+        const dy = this.y < traget.y ? 1 : -1;
+        const dx = this.x < traget.x ? 1 : -1;
+
+        for  (let i = 1; i < absY; i++) {
+            if (!this.board.getCell(this.x + dx * i, this.y + dy * i).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    setFigure(figure: Figure) {
+        this.figure = figure;
+        this.figure.cell = this;
+    }
+    
+    addLostFigure(figure: Figure) {
+        figure.color === Colors.BLACK ? this.board.lostBlackFigure.push(figure) : this.board.lostWhiteFigure.push(figure);
+    }
+
     moveFigure(target: Cell) {
         if (this.figure && this.figure?.canMove(target)) {
             this.figure.moveFigure(target);
-            target.figure = this.figure;
+
+            if (target.figure) {
+                this.addLostFigure(target.figure);
+            }
+
+            target.setFigure(this.figure)
             this.figure = null;
         }
     }
