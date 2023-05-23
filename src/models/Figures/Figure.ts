@@ -1,6 +1,7 @@
 import { Colors } from "../Colors";
-import logo from '../../assets/black-bishop.png'
 import { Cell } from "../Cell";
+
+import logo from '../../assets/black-bishop.png'
 
 export enum Figurenames {
     FIGURE = 'FIGURE',
@@ -33,35 +34,17 @@ export class Figure {
         if (target.figure?.color === this.color) {
             return false;
         }
-        if (target.figure?.name === Figurenames.KING) {
-            return false;
-        }
-        // if (target.figure?.name === Figurenames.BISHOP) {
-        //     return false;
-        // }
-        // if (target.figure?.name === Figurenames.ROOK) {
-        //     return false;
-        // }
-        // if (target.figure?.name === Figurenames.QUEEN) {
-        //     return false;
-        // }
-        // if (target.figure?.name === Figurenames.KNIGHT) {
-        //     return false;
-        // }
-        // if (target.figure?.name === Figurenames.PAWN) {
-        //     return false;
-        // }
-        // if (target.figure?.name === Figurenames.FIGURE) {
-        //     return false;
-        // }
         // if (target.figure?.name === Figurenames.KING) {
-        //     return false;
-        // }
-        // if (target.figure?.name === Figurenames.BISHOP) {
         //     return false;
         // }
         return true;
     }
 
-    moveFigure(target: Cell) {}
+    moveFigure(target: Cell) {
+        
+    }
+
+    isUnderAttack(): boolean  {
+        return false;
+    }
 }
